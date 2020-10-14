@@ -1,0 +1,108 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.lo {
+    margin-right: 20px;
+}
+
+.nav1 a {
+    color: black;
+    font-size: 15px;
+    text-decoration: none;
+
+}
+
+.nav1 .a1 {
+
+    display: inline-block;
+    color:  #28beff;
+    
+}
+
+.nav1 a:hover {
+   color: #28beff;
+}
+
+.fen {
+    width: 150px;
+    margin-left: 50px;
+
+}
+
+.fen-lei {
+    width: 150px;
+    margin-left: 100px;
+}
+
+
+.box {
+    margin: 5px 45px;
+}
+
+
+.i1 {
+    position: relative;
+    margin-left: 10px;
+    color: #28beff;
+}
+
+.i1 .s1 {
+    position: absolute;
+    top: 1px;
+    left: 30px;
+    font-size: 14px;
+}
+
+.c1 {
+    position: relative;
+}
+
+.addbtn {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+}
+
+table {
+   width: 200px;
+   margin: 0 auto;
+
+}
+
+table tr {
+    height: 35px;
+    line-height: 35px;
+}
+
+table tr th {
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.operate {
+    margin-top: 10px;
+    margin-left: 150px;
+}
+
+.operate button {
+    width: 50px;
+    text-align: center;
+}
+
+.time-h {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ic {
+    margin-left: 150px;
+    margin-top: 2px;
+    color: #00B7FF;
+}
+
+.sn1 {
+    color: #cb2027;
+}

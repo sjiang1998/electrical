@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+h5 {
+    color: #f5a31f;
+}
+
+.fen {
+    margin-left: 20px;
+}
+
+.ic {
+    margin-left: 150px;
+    margin-top: 2px;
+    color: #00B7FF;
+}
+
+.sn1 {
+    color: #cb2027;
+}
+
+.f_sp1 {
+    font-weight : 700;
+    font-size: 18px;
+    color : rgb(253, 173, 82);
+}
+
+.f_sp2 {
+    font-weight : 700;
+    font-size: 18px;
+    color : rgb(8, 201, 82);
+}
+
+
+.c_p1 {
+    width: 30px;
+    height: 20px;
+    background-color: rgb(224, 39, 39);
+    color: #fff;
+
+}
+

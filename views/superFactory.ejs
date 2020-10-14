@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="author" content="Łukasz Holeczek">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>CoreUI Free Bootstrap Admin Template</title>
+    <!-- Icons-->
+    <link href="/vendors/@coreui/icons/css/coreui-icons.min.css" rel="stylesheet">
+    <link href="/vendors/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendors/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+    <!-- Main styles for this application-->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/vendors/pace-progress/css/pace.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/super.css">
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed">
+
+
+    <header class="app-header navbar">
+
+        <a class="navbar-brand" href="/superUser" style="margin-left: 50px">
+            <i class="icons cui-task" aria-hidden="true"></i>&nbsp;
+
+        </a>
+
+        <ul class="nav navbar-nav d-md-down-none nav1">
+            <li class="nav-item px-sm-5">
+                <a class="" href="/superUser">用户管理</a>
+            </li>
+            <li class="nav-item px-sm-5">
+                <a class="" href="/superGood">商品管理</a>
+            </li>
+            <li class="nav-item px-sm-5">
+                <a class="a1" href="/superFactory">工厂管理</a>
+            </li>
+            <% if(username){ %>
+            <li class="nav-item px-sm-5">
+                <a class="" href="/logout">退出</a>
+            </li>
+            <% } %>
+
+        </ul>
+
+        <% if(username){ %>
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item d-md-down-none">
+                <p style="margin-top: 8px;margin-right: 30px;color: #136685;">欢迎您！
+                    <strong style="font-size:18px;color: #20A8D8"><%= username %></strong>管理员
+                </p>
+            </li>
+        </ul>
+        <% }else{ %>
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item d-md-down-none">
+                <a class="nav-link lo" href="/login">
+                    <i class="fa fa-user-circle fa-2x mt-2">
+                        <h6>登录</h6>
+                    </i>
+                </a>
+            </li>
+
+        </ul>
+        <% } %>
+
+
+        <button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </header>
+
+
+    <div class="app-body">
+
+        <main class="main">
+            <!-- Breadcrumb-->
+            <ol class="breadcrumb">
+
+                <% if(factories != null){ %>
+                <div class="col">
+                    <div class="tab-content  border-white mt-4" id="pills-tabContent">
+                        <div class="tab-pane fade active show " id="pills-home" role="tabpanel"
+                            aria-labelledby="pills-home-tab">
+                            <div class="animated fadeIn">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="input-prepend input-group col-sm-10">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fa fa-search"></i></span>
+                                            </div>
+                                            <input class="form-control col-2" id="sfname" size="5" type="text"
+                                                placeholder="输入相关厂家名">&nbsp;&nbsp;
+                                            <input class="form-control col-2" id="sgname" size="5" type="text"
+                                                placeholder="输入相关商品名">
+                                            <span class="input-group-append">
+                                                <button class="btn btn-info" type="button" onclick="find()">查找</button>
+                                            </span>
+
+                                        </div>
+                                        <button type="button" class="btn btn-primary addbtn" data-toggle="modal"
+                                            data-target="#add">新增厂家商品信息
+                                        </button>
+                                    </div>
+                                    <div v-cloak class="card-body collapse show " id="collapseExample">
+                                        <table class="table table-responsive-sm table-bordered" v-if="items.length!=0">
+                                            <thead>
+                                                <tr>
+                                                    <th><input type="checkbox" id="check_all" /></th>
+                                                    <th>工厂名</th>
+                                                    <th>地址</th>
+                                                    <th>商品名</th>
+                                                    <th>成本</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody id="body">
+                                                <% for(var i=0;i < factories.length;i++){ %>
+                                                <tr>
+                                                    <td><input type="checkbox" size="20">#<%= i+1%></td>
+                                                    <td><%= factories[i].fname%></td>
+                                                    <td><%= factories[i].faddress%></td>
+                                                    <td><%= factories[i].gname%></td>
+                                                    <td><%= factories[i].fcost%></td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-toggle="modal" data-target="#edit"
+                                                            onclick="edit('<%= factories[i]._id %>')">修改
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-toggle="modal" data-target="#d1"
+                                                            onclick="dele('<%= factories[i]._id %>')">删除
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 新增 -->
+                        <div class="modal fade" id="add" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                            role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background-color: rgb(68, 176, 238);">
+                                        <h5 class="modal-title" id="staticBackdropLabel" style="color: ghostwhite;">新增工厂
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="needs-validation">
+
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-sm-3 col-form-label">工厂名</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="addfname" required>
+                                                    <div class="invalid-tooltip">
+                                                        输入工厂名不能为空！
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-sm-3 col-form-label">地址</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="addfaddress"
+                                                        placeholder="请按以下格式输入：xx省xx市xx区/镇/县xxxx"
+                                                        pattern="^.+(省).+(市).+(区|镇|县).*$" required>
+                                                    <div class="invalid-tooltip">
+                                                        输入的地址格式有误
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-sm-3 col-form-label">商品名称</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="addgname" required>
+                                                    <div class="invalid-tooltip">
+                                                        输入工厂名不能为空！
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-sm-3 col-form-label">价格</label>
+                                                <div class="col-sm-6 form-inline">
+                                                    <input type="text" class="form-control" id="addfprice"
+                                                        pattern="^[0-9]+(.[0-9]+)?$" required>
+                                                    <span style="padding-left:10px">元</span>
+                                                    <div class="invalid-tooltip">
+                                                        输入金额有误
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" onclick="add()">新增</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- 新增成功 -->
+                        <div class="modal fade show" id="adds" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel">
+                            <div class="modal-dialog modal-success modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">提示</h4>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span>新增成功！</span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" type="button"
+                                            onclick="refreshwin()">确认</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- 编辑 -->
+                        <div class="modal fade" id="edit" data-backdrop="static" data-keyboard="false" tabindex="-1"
+                            role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background-color: rgb(68, 176, 238);">
+                                        <h5 class="modal-title" id="staticBackdropLabel" style="color: ghostwhite;">编辑
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <form class="needs-validation">
+
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-sm-3 col-form-label">工厂名</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="editfname" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-sm-3 col-form-label">商品名称</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="editgname" readonly>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label for="staticEmail" class="col-sm-3 col-form-label">地址</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="editfaddress"
+                                                        placeholder="请按以下格式输入：xx省xx市xx区/镇/县xxxx"
+                                                        pattern="^.+(省).+(市).+(区|镇|县).*$" required>
+                                                    <div class="invalid-tooltip">
+                                                        输入的地址格式有误
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" id="editbtn">编辑</button>
+                                        <button type="button" class="btn btn-danger" id="addbtn">新增地址</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 编辑成功 -->
+                        <div class="modal fade show" id="edits" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel">
+                            <div class="modal-dialog modal-success modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">成功 </h4>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <span id="span1"></span>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" type="button"
+                                            onclick="refreshwin()">确认</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal删除 -->
+                        <div class="modal fade show" id="d1" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" data-backdrop='static'>
+                            <div class="modal-dialog modal-danger modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">删除</h4>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <span>商品删除后将无法恢复！是否确认删除？</span>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-danger" type="button" data-toggle="modal"
+                                            onclick="delconfirm()">确认
+                                        </button>
+                                        <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--删除成功-->
+                        <div class="modal fade show" id="d2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog modal-success modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">提示</h4>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <b>
+                                            <span style="font-weight: 400">删除成功！相关商品也进行下架！</span>
+                                        </b>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-secondary" type="button"
+                                            onclick="refreshwin()">确认</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <% }else{ %>
+                <h2 style="margin: 0 auto">请先登录！</h2>
+                <% } %>
+
+
+            </ol>
+
+            <div class="container-fluid">
+            </div>
+        </main>
+    </div>
+
+
+    <footer class="app-footer">
+        <div>
+            <a href="#">猪猪</a>
+            <span>&copy; 欢迎购买商品</span>
+        </div>
+        <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="#">jww</a>
+        </div>
+    </footer>
+
+
+    <!-- CoreUI and necessary plugins-->
+    <script src="/vendors/jquery/js/jquery.min.js"></script>
+    <script src="/vendors/popper.js/js/popper.min.js"></script>
+    <script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vendors/pace-progress/js/pace.min.js"></script>
+    <script src="/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js"></script>
+    <script src="/vendors/@coreui/coreui/js/coreui.min.js"></script>
+    <script type="text/javascript" src="/javascripts/superfactory.js"></script>
+
+
+</body>
+
+</html>

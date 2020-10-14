@@ -1,0 +1,28 @@
+h5 {
+    color: #f5a31f;
+}
+
+strong {
+    color: #28beff;
+}
+
+span {
+    font-size: 15px;
+    margin-right: 5px;
+}
+
+.fen {
+    width: 150px;
+    margin-left: 50px;
+
+}
+
+.fen-lei {
+    width: 150px;
+    margin-left: 100px;
+}
+
+#imgSrc {
+    width: 220px;
+    height: 90px;
+}

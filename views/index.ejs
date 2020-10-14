@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="author" content="Łukasz Holeczek">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>CoreUI Free Bootstrap Admin Template</title>
+    <!-- Icons-->
+    <link href="/vendors/@coreui/icons/css/coreui-icons.min.css" rel="stylesheet">
+    <link href="/vendors/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendors/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+    <!-- Main styles for this application-->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/index.css" rel="stylesheet">
+    <link href="/vendors/pace-progress/css/pace.min.css" rel="stylesheet">
+
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed">
+
+
+    <header class="app-header navbar" style="background-color: rgb(233, 231, 231);">
+
+        <a class="navbar-brand px-sm-5" href="/">
+            <h3 style="margin-left:50px;color: #1d3497">电器销售</h3>
+        </a>
+
+
+        <ul class="nav navbar-nav d-md-down-none" style="margin-left: 20px;">
+
+            <li class="nav-item px-sm-4">
+                <a class="btn-link" href="/">首页</a>
+            </li>
+            <li class="nav-item px-sm-4">
+                <a class="btn-link" href="/saleOrder">管理订单</a>
+            </li>
+            <li class="nav-item px-sm-4">
+                <a class="btn-link" href="/accView?name=<%= username%>">我的业绩</a>
+            </li>
+
+            <% if(username){ %>
+            <li class="nav-item px-sm-4">
+                <a href="/logout" class="btn-link">退出</a>
+            </li>
+            <% } %>
+        </ul>
+
+        <% if(username){ %>
+        <ul class="nav navbar-nav ml-auto" style="margin-right: 20px;">
+            <li>
+                <!-- 填写客人信息 -->
+                <% if(!customername){%>
+                <button type="button" class="btn btn-ghost-primary" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fa fa-edit">填写信息</i>&nbsp;&nbsp;
+                </button>
+                <% } %>
+
+            </li>
+        </ul>
+
+        <% }else{ %>
+
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item d-md-down-none">
+                <a class="nav-link" href="/login">
+                    <i class="fa fa-user-circle fa-2x mt-2">
+                        <h6>登录</h6>
+                    </i>
+                </a>
+            </li>
+
+        </ul>
+
+        <% } %>
+
+        <button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </header>
+
+    <!-- 填写信息弹框 -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">信息记录</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <form class="form-horizontal needs-validation">
+
+                            <!-- 姓名 -->
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="input-normal">姓名</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="cname" type="text" name="input-normal" required>
+                                    <div class="invalid-tooltip">
+                                        姓名不能为空！
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 手机 -->
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="input-normal">电话</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="ctele" type="text" name="input-normal"
+                                        pattern="^(13[0-9]|14[5|7]|15[0|1|2|3|5|6|7|8|9]|17[0|1|2|3|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$"
+                                        required>
+                                    <div class="invalid-tooltip">
+                                        手机号码有误！
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 地址 -->
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="input-normal">地址</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="caddress" type="text"
+                                        placeholder="请按以下格式输入：xx省xx市xx区/镇/县xxxx" pattern="^.+(省).+(市).+(区|镇|县).*$"
+                                        required>
+                                    <div class="invalid-tooltip">
+                                        输入的地址格式有误
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-success" onclick="save()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- <商品列表> -->
+    <div class="app-body">
+        <main class="main">
+            <!-- Breadcrumb-->
+            <ol class="breadcrumb">
+                <div class="row">
+                    <div class="col">
+                        <ul class="nav nav-pills mb-1" id="pills-tab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active show" id="pills-home-tab" data-toggle="pill"
+                                    href="#pills-home" role="tab" aria-controls="pills-home"
+                                    aria-selected="false">全部</a>
+                            </li>
+                            <li class="nav-item fen">
+                                <a class="nav-link" id="pills-icebox-tab" data-toggle="pill" href="#pills-icebox "
+                                    role="tab" aria-controls="pills-icebox" aria-selected="false">冰箱</a>
+                            </li>
+                            <li class="nav-item fen">
+                                <a class="nav-link " id="pills-washingmac-tab" data-toggle="pill"
+                                    href="#pills-washingmac" role="tab" aria-controls="pills-washingmac"
+                                    aria-selected="true">洗衣机</a>
+                            </li>
+                            <li class="nav-item fen">
+                                <a class="nav-link " id="pills-aircond-tab" data-toggle="pill" href="#pills-aircond"
+                                    role="tab" aria-controls="pills-aircond" aria-selected="true">空调</a>
+                            </li>
+                            <li class="nav-item fen">
+                                <a class="nav-link " id="pills-other-tab" data-toggle="pill" href="#pills-other"
+                                    role="tab" aria-controls="pills-other" aria-selected="true">其它</a>
+                            </li>
+                            <!--搜索框-->
+                            <li>
+                                <div class="form-inline px-sm-5">
+                                    <input class="form-control mr-sm-2" id="search" placeholder="名称"
+                                        aria-label="Search">
+                                    <button class="btn btn-outline-info my-2 my-sm-0" onclick="find()">查找</button>
+                                </div>
+                            </li>
+                            <li class="nav-item d-md-down-none">
+                                <p style="margin-top: 5px;margin-right: 5px;color: #00aced; margin-left: 60px;">
+                                    销售员：
+                                    <% if(username){ %>
+                                    <span class="f_sp1"><%= username %></span>
+                                    <% } %>
+                                </p>
+
+                            </li>
+                            <li class="nav-item d-md-down-none">
+                                <p style="margin-top: 5px;margin-right: 5px;color: #00aced; margin-left: 60px;">
+                                    接待人：
+                                    <% if(customername){ %>
+                                    <span class="f_sp2"><%= customername %></span>
+                                    <% } %>
+                                </p>
+
+                            </li>
+                        </ul>
+
+
+                        <div class="tab-content  border-white" id="pills-tabContent">
+
+                            <!--全部-->
+                            <div class="tab-pane fade active show" id="pills-home" role="tabpanel"
+                                aria-labelledby="pills-home-tab">
+                                <div class="animated fadeIn">
+                                    <div class="row">
+                                        <% for(let i=0 ; i < goods.length;i++){%>
+                                        <div class="col-sm-6 col-lg-3">
+                                            <div class="card" id="card1" style="width: 18rem;">
+
+                                                <p id="c_p" style="color:white">已选</p>
+                                                <span id="id1" style="color:white"><%= goods[i]._id%></span>
+                                                <img src="<%= goods[i].gImgurl%>" class="card-img-top" height="250"
+                                                    width="100">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><%= goods[i].gname%></h5>
+                                                    <a href="/saleDetail?id=<%= goods[i]._id%>">
+                                                        <% for(let j = 0;j < 25;j++){ %>
+                                                        <%= goods[i].gInfo[j] %>
+                                                        <% } %>
+                                                        .....
+                                                    </a>
+                                                    <br><br>
+                                                    <button type="button" class="btn btn-sm btn-light float-left">
+                                                        <a class="link active show float-left"
+                                                            href="/saleDetail?id=<%= goods[i]._id%>">详情</a>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-light float-right">
+                                                        <a class="link active show float-left" id="ap"
+                                                            onclick="addpurchase('<%= goods[i]._id%>')">加购</a>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+
+                                    </div>
+                                    <!-- /.row-->
+                                </div>
+
+
+                            </div>
+
+                            <!--冰箱-->
+                            <div class="tab-pane fade" id="pills-icebox" role="tabpanel"
+                                aria-labelledby="pills-icebox-tab">
+                                <div class="animated fadeIn">
+                                    <div class="row">
+                                        <% for(let i=0 ; i < goods.length;i++){%>
+                                        <% if(goods[i].gtype == "冰箱"){ %>
+                                        <div class="col-sm-6 col-lg-3">
+                                            <div class="card" style="width:18rem">
+
+                                                <p id="c_p" style="color:white">已选</p>
+                                                <img src="<%= goods[i].gImgurl%>" class="card-img-top" height="250"
+                                                    width="100">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><%= goods[i].gname%></h5>
+                                                    <a href="/saleDetail?id=<%= goods[i]._id%>">
+                                                        <% for(let j = 0;j < 25;j++){ %>
+                                                        <%= goods[i].gInfo[j] %>
+                                                        <% } %>
+                                                        .....
+                                                    </a>
+                                                    <br><br>
+                                                    <button type="button" class="btn btn-sm btn-light float-left">
+                                                        <a class="link active show float-left"
+                                                            href="/saleDetail?id=<%= goods[i]._id%>">详情</a>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-light float-right">
+                                                        <a class="link active show float-left" id="ap"
+                                                            onclick="addpurchase('<%= goods[i]._id%>')">加购</a>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% } %>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                            <!--洗衣机-->
+                            <div class="tab-pane fade " id="pills-washingmac" role="tabpanel"
+                                aria-labelledby="pills-washingmac-tab">
+
+                                <div class="animated fadeIn">
+                                    <div class="row">
+                                        <% for(let i=0 ; i < goods.length;i++){%>
+                                        <% if(goods[i].gtype == "洗衣机"){ %>
+                                        <div class="col-sm-6 col-lg-3">
+                                            <div class="card" style="width: 18rem;">
+
+                                                <p id="c_p" style="color:white">已选</p>
+                                                <img src="<%= goods[i].gImgurl%>" class="card-img-top" height="250"
+                                                    width="100">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><%= goods[i].gname%></h5>
+                                                    <a href="/saleDetail?id=<%= goods[i]._id%>">
+                                                        <% for(var j = 0;j < 25;j++){ %>
+                                                        <%= goods[i].gInfo[j] %>
+                                                        <% } %>
+                                                        .....
+                                                    </a>
+                                                    <br><br>
+                                                    <button type="button" class="btn btn-sm btn-light float-left">
+                                                        <a class="link active show float-left"
+                                                            href="/saleDetail?id=<%= goods[i]._id%>">详情</a>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-light float-right">
+                                                        <a class="link active show float-left" id="ap"
+                                                            onclick="addpurchase('<%= goods[i]._id%>')">加购</a>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% } %>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!--空调-->
+                            <div class="tab-pane fade " id="pills-aircond" role="tabpanel"
+                                aria-labelledby="pills-aircond-tab">
+
+                                <div class="animated fadeIn">
+                                    <div class="row">
+                                        <% for(var i=0 ; i < goods.length;i++){%>
+                                        <% if(goods[i].gtype == "空调"){%>
+                                        <div class="col-sm-6 col-lg-3">
+                                            <div class="card" style="width:18rem">
+
+                                                <p id="c_p" style="color:white">已选</p>
+                                                <img src="<%= goods[i].gImgurl%>" class="card-img-top" height="250"
+                                                    width="100">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><%= goods[i].gname%></h5>
+                                                    <a href="/saleDetail?id=<%= goods[i]._id%>">
+                                                        <% for(var j = 0;j < 25;j++){ %>
+                                                        <%= goods[i].gInfo[j] %>
+                                                        <% } %>
+                                                        .....
+                                                    </a>
+                                                    <br><br>
+                                                    <button type="button" class="btn btn-sm btn-light float-left">
+                                                        <a class="link active show float-left"
+                                                            href="/saleDetail?id=<%= goods[i]._id%>">详情</a>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-light float-right">
+                                                        <a class="link active show float-left" id="ap"
+                                                            onclick="addpurchase('<%= goods[i]._id%>')">加购</a>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% } %>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <!--其它-->
+                            <div class="tab-pane fade " id="pills-other" role="tabpanel"
+                                aria-labelledby="pills-other-tab">
+
+                                <div class="animated fadeIn">
+                                    <div class="row">
+                                        <% for(var i=0 ; i < goods.length;i++){%>
+                                        <% if(goods[i].gtype == "其它"){%>
+                                        <div class="col-sm-6 col-lg-3">
+                                            <div class="card" style="width: 18rem;">
+
+                                                <p id="c_p" style="color:white">已选</p>
+                                                <img src="<%= goods[i].gImgurl%>" class="card-img-top" height="250"
+                                                    width="100">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><%= goods[i].gname%></h5>
+                                                    <a href="/saleDetail?id=<%= goods[i]._id%>">
+                                                        <% for(var j = 0;j < 25;j++){ %>
+                                                        <%= goods[i].gInfo[j] %>
+                                                        <% } %>
+                                                        .....
+                                                    </a>
+                                                    <br><br>
+                                                    <button type="button" class="btn btn-sm btn-light float-left">
+                                                        <a class="link active show float-left"
+                                                            href="/saleDetail?id=<%= goods[i]._id%>">详情</a>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-light float-right">
+                                                        <a class="link active show float-left" id="ap"
+                                                            onclick="addpurchase('<%= goods[i]._id%>')">加购</a>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                        <% } %>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 最下面那一行 -->
+                <div class="card-footer fixed-bottom mr-6" style="height: 50px;background-color: rgb(233, 231, 231);">
+                    <div class="row mr-6" style="margin-right: 30px;float: right;">
+
+                        <div class="btn-group dropup mb-5 mr-2">
+
+                            <!-- 已选商品按钮 -->
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bought"
+                                onclick="selectedbtn()">
+                                已选商品列表
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+
+                            </div>
+                        </div>
+                        <div class="col-3 mt-2">
+                            <span style="font-size:15px;">
+                                ￥<span id="sum" class="yuan">0</span>
+                            </span>
+                        </div>
+                        <div class="col-6 col-sm-4 col-md-1 col-5 mb-3 mb-xl-0">
+                            <button class="btn btn-sm btn-primary mr-6" type="button" onclick="buy()">
+                                <span style="color: white;font-size:15px">去结算</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </ol>
+        </main>
+    </div>
+
+
+    <!-- 已选商品列表弹框 -->
+    <div class="modal fade" id="bought" tabindex="-1" role="dialog" aria-labelledby="boughtModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:rgb(92, 156, 207)">
+                    <h5 class="modal-title" style="color: aliceblue;" id="boughtModalLabel">已选商品列表</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" id="mb1" style="height:400px; overflow:scroll;">
+                    <!-- 弹框中的列表 -->
+                    <div class="card mb-3">
+                        <div class="row no-gutters" style="border: 1cm;">
+                            <div class="col-md-4">
+                                <img src="" width="150px" height="200px" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">冰箱</h5>
+                                    <p class="card-text">志高50L冰箱家用小型迷你单门冰柜母乳储奶冷冻冷藏冷柜母乳专用</p>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-8">
+                                        &nbsp;&nbsp;<h5 class="price" style="text-align: right;">
+                                            价格：&nbsp;￥<span id="price">39</span>元
+                                        </h5>
+                                    </div>
+                                    <div class="d-flex justify-content-around mt-3 col-4 ">
+                                        <div class="row">
+                                            <button class="btn btn-square btn-sm btn-ligt" id="sub"
+                                                style="height: 30px">-
+                                            </button>
+                                            <input size="1" id="num" value="1" style="height: 30px">
+                                            <button class="btn btn-square  btn-sm btn-light" id="add"
+                                                style="height: 30px">
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="surebtn" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 折扣 -->
+    <div class="modal fade show" id="o1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        data-backdrop='static'>
+        <div class="modal-dialog modal-danger modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">打折？</h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    请输入折扣：
+                    <input type="text" id="onsale" size="8">&nbsp;&nbsp;折
+                    (没有折扣点击确认键即可)
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-toggle="modal" id="s5">确认
+                    </button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--结算-->
+    <div class="modal fade show" id="o2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        data-backdrop='static'>
+        <div class="modal-dialog modal-danger modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="isbod"></h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="cbuy">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-toggle="modal" id="s6">确认
+                    </button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--购买成功-->
+    <div class="modal fade show" id="s2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-success modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">提示</h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <b>
+                        <font size="2.2">购买成功！！ฅ(๑ ̀ㅅ ́๑)ฅ</font>
+                    </b>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" id="suredo">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer class="app-footer">
+        <div>
+            <a href="#">猪猪</a>
+            <span>&copy; 欢迎购买商品</span>
+        </div>
+        <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="#">jww</a>
+        </div>
+    </footer>
+
+
+
+    <!-- CoreUI and necessary plugins-->
+    <script src="/vendors/jquery/js/jquery.min.js"></script>
+    <script src="/vendors/popper.js/js/popper.min.js"></script>
+    <script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vendors/pace-progress/js/pace.min.js"></script>
+    <script src="/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js"></script>
+    <script src="/vendors/@coreui/coreui/js/coreui.min.js"></script>
+    <script>
+        let username = '<%= username%>';
+        let customername = '<%= customername%>';
+        let ctele = '<%= ctele%>';
+        let caddress = '<%= caddress%>';
+
+        let addGoods = [];
+
+        let j = 0, z = 0;
+
+
+        // 记录接待信息
+        function save() {
+
+            let cname = $("#cname").val();
+            let ctele = $("#ctele").val();
+            let caddress = $("#caddress").val();
+
+            let form = document.getElementsByClassName('needs-validation')[0];
+            form.classList.add('was-validated');
+
+            if (form.checkValidity() === true) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/saveReception",
+                    data: {
+                        cname: cname,
+                        ctele: ctele,
+                        caddress: caddress
+                    },
+                    cache: false,
+                    success: function (data) {
+                        if (data == 1) {
+                            window.location = "/";
+                        }
+                    }
+                })
+
+
+            } else {
+                form.classList.add('was-validated');
+            }
+
+        }
+
+
+        // 加购
+        function addpurchase(_id) {
+
+            // 已登录
+            if (username && customername) {
+                let flag = 1;
+                for (let y = 0; y < addGoods.length; y++) {
+
+                    if (addGoods[y].goodId == _id) {
+                        flag = 0;
+                    }
+                }
+
+                console.log(flag);
+                if (flag) {
+                <% for (let i = 0; i < goods.length; i++) { %>
+                     if ('<%= goods[i]._id%>' == _id) {
+                            addGoods[j] = {
+                                "goodId": '<%= goods[i]._id%>',
+                                "img": '<%= goods[i].gImgurl%>',
+                                "fname": '<%= goods[i].fname%>',
+                                "goodname": '<%= goods[i].gname%>',
+                                "gInfo": '<%= goods[i].gInfo%>',
+                                "price": '<%= goods[i].gprice%>',
+                                "goodnum": 1
+                            }
+                            z = <%= i %>;
+                        } 
+                <% } %>
+                        j++;
+
+                }
+
+                // 添加样式，显示"已选"
+                $(document).on('click', '#ap', function () {
+
+                    $(this).parents(".card").find("#c_p").attr("class", "c_p1");
+
+                })
+
+                // 计算金额
+                let totalprice = 0;
+                for (let x = 0; x < addGoods.length; x++) {
+                    totalprice = totalprice + parseFloat(addGoods[x].price) * parseInt(addGoods[x].goodnum);
+                }
+                $("#sum").text(totalprice);
+
+
+            } else {
+
+                alert("还未登录或填写客户信息！请先填写！");
+
+
+            }
+
+        }
+
+
+        //已选购列表
+        function selectedbtn() {
+            var modal = $("#mb1");
+            modal.empty();
+            $.each(addGoods, function (index, Info) {
+                let d1 = $("<div>");
+                d1.addClass('card mb-3');
+                d1.attr('id', 'cd1');
+
+                let d2 = $("<div>");
+                d2.addClass('row no-gutters');
+                d2.attr('style', 'border: 1cm');
+
+                d2.html(
+                    "<div class='col-md-4'>" +
+                    "<img src=\"" + Info.img + "\" width='150px' height='200px' class='card-img' alt='...'>" +
+                    "</div>" +
+                    "<div class='col-md-8'>" +
+                    "<div class='card-body'>" +
+                    " <h5 class='card-title'>" + Info.goodname + "</h5>" +
+                    "<p class='card-text'>" + Info.gInfo + "</p></div>" +
+                    "<div class='row'>" +
+                    "<div class='col-8'>" +
+                    " &nbsp;&nbsp;<h5 class='price' style='text-align: right;'>价格：&nbsp;￥<span id='price'>" + Info.price + "</span>元</h5></div>" +
+                    "<div class='d-flex justify-content-around mt-3 col-4 '>" +
+                    "<div class='row'>" +
+                    "<button class='btn btn-square btn-sm btn-ligt' id='sub' style='height: 30px'>-</button>" +
+                    "<input size='1' id='num' value='" + Info.goodnum + "' style='height: 30px'>" +
+                    "<button class='btn btn-square  btn-sm btn-light' id='add' style='height: 30px'>+</button>" +
+                    "<span id='ind' style='color:#fff'>" + index + "</span>" +
+                    "</div></div></div></div>");
+
+                d1.append(d2);
+                modal.append(d1);
+            })
+
+
+        }
+
+
+        // 数量减少
+        $(document).on('click', '#sub', function () {
+            let ind = parseInt($(this).parents('#cd1').find('#ind').text());
+            let styleId = addGoods[ind].goodId;
+
+            //获取数量，next()函数，用于筛选每个匹配元素之后紧邻的同辈元素
+            var num = $(this).next().val();
+            //自减1
+            var last_num = parseInt(num) - 1;
+            if (last_num >= 1) {
+
+                $(this).next().val(last_num);
+            } else {
+                $(this).parents('#cd1').removeClass("card mb-3");
+                $(this).parents('#cd1').empty();
+
+
+                $('span[id="ind"]').each(function () {
+                    let changeIndex = parseInt($(this).text());
+
+                    if (changeIndex > ind) {
+
+                        $(this).text(changeIndex - 1);
+                    }
+                });
+
+                addGoods.splice(ind, 1);
+                j--;
+
+                $('div[class="card"]').each(function () {
+                    let id1 = $(this).children("#id1").text();
+
+                    if (styleId == id1) {
+                        $(this).children("#c_p").removeClass("c_p1");
+                    }
+
+                })
+
+
+            }
+
+
+            total();
+        })
+
+        // 数量增加
+        $(document).on('click', '#add', function () {
+            //获取数量，prev()函数用于筛选每个匹配元素之前紧邻的同辈元素，并以jQuery对象的形式返回。
+            var num = $(this).prev().val();
+            //自增1
+            var last_num = parseInt(num) + 1;
+            if (last_num <= 10) {
+                //替换
+                $(this).prev().val(last_num);
+            } else {
+                alert("限购量为10个！");
+            }
+            total();
+
+        });
+
+
+        //数量增加和减少 数值随之变化
+        function total() {
+            let total = 0;
+
+            let numInfo = [], priceInfo = [];
+
+            $('input[id="num"]').each(function (index, nums) {
+                numInfo.push(nums.value);
+
+            })
+            $('span[id="price"]').each(function () {
+                var prices = $(this).text();
+                priceInfo.push(prices);
+            })
+
+            for (var z = 0; z < addGoods.length; z++) {
+                total = total + parseInt(numInfo[z]) * parseFloat(priceInfo[z]);
+
+            }
+
+            $("#sum").text(total);
+
+
+        }
+
+        // 点击模态框确认按钮，重新保存数量
+        $("#surebtn").click(function () {
+
+            $('input[id="num"]').each(function (index, nums) {
+
+                addGoods[index].goodnum = parseInt(nums.value);
+
+            })
+
+        });
+
+
+        //结算
+        function buy() {
+            if (username && customername) {
+                if (addGoods && addGoods.length > 0) {
+
+                    $("#o1").modal('show');
+
+                    $("#s5").click(function () {
+
+                        let orders = [];
+
+                        for (let i = 0; i < addGoods.length; i++) {
+                            orders[i] = {
+                                "goodId": addGoods[i].goodId,
+                                "goodname": addGoods[i].goodname,
+                                "goodnum": addGoods[i].goodnum,
+                                "price": addGoods[i].price,
+                                "cname": customername,
+                                "ctele": ctele,
+                                "caddress": caddress,
+                                "sname": username,
+                                "fname": addGoods[i].fname
+                            }
+                        }
+
+                        let onsale = $("#onsale").val();
+
+                        if (onsale) {
+                            onsale = parseFloat(onsale) * 0.1;
+                        } else {
+                            onsale = 1;
+                        }
+
+                        $("#o1").modal('hide');
+
+
+                        $("#isbod").text("结算");
+                        var div = $('#cbuy');
+                        div.empty();
+                        var p = $("<p>");
+                        p.text("您将购买以下物品：");
+                        div.append(p);
+                        for (let i = 0; i < orders.length; i++) {
+                            var p = $("<p>");
+                            p.attr("style", "margin-left:20px")
+                            p.text(i + 1 + "：" + orders[i].goodname + '           ×' + orders[i].goodnum + '      ' + '      ---￥' + orders[i].goodnum * orders[i].price * onsale);
+                            orders[i].price = orders[i].price * onsale;
+                            div.append(p)
+                        }
+                        var p1 = $("<p>");
+                        p1.attr("style", "margin-left:300px");
+                        onsale == 1 ? p1.text("无折扣") : p1.text("折扣：" + onsale * 10 + "折");
+
+
+                        var p2 = $("<p>");
+                        p2.attr("style", "margin-left:300px");
+                        p2.text("合计：" + parseFloat($("#sum").text()) * onsale);
+                        div.append(p1);
+                        div.append(p2);
+
+
+                        $("#o2").modal('show');
+                        $("#s6").click(function () {
+                            console.log("orders===============", orders)
+                            $.ajax({
+                                type: "GET",
+                                url: "/aorders",
+                                data: {
+                                    orders: orders
+                                },
+                                success: function (data) {
+                                    if (data == 1) {
+                                        $("#o2").modal('hide');
+                                        $("#s2").modal('show');
+                                        $('#suredo').click(function () {
+                                            window.location = "/saleOrder";
+                                        })
+                                    }
+                                }
+
+                            })
+                        })
+
+                    })
+
+
+                } else {
+                    alert("未有选购的商品！");
+                }
+
+            } else {
+                alert("还未登录或填写客户信息！请先填写！");
+            }
+        }
+
+
+        function find() {
+            var searInfo = $("#search").val();
+            
+            window.location = "/saleSearch?searInfo=" + searInfo;
+
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="author" content="Łukasz Holeczek">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>CoreUI Free Bootstrap Admin Template</title>
+    <!-- Icons-->
+    <link href="/vendors/@coreui/icons/css/coreui-icons.min.css" rel="stylesheet">
+    <link href="/vendors/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendors/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+    <!-- Main styles for this application-->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/saleDetail.css" rel="stylesheet">
+    <link href="/vendors/pace-progress/css/pace.min.css" rel="stylesheet">
+
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed">
+
+
+    <header class="app-header navbar">
+
+        <a class="navbar-brand px-sm-5" href="/" style="margin-left: 600px">
+            <i class="icons font-2xl d-block cui-basket-loaded"></i>&nbsp;&nbsp;
+            <h3>电器销售系统</h3>
+        </a>
+
+
+        <ul class="nav navbar-nav d-md-down-none">
+            <a class="navbar-brand px-sm-5" href="/">
+                <i class="icons d-block cui-arrow-right"></i>
+                <p class="return">返回首页</p>
+            </a>
+
+
+        </ul>
+
+
+        <button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </header>
+
+
+    <div class="app-body">
+
+        <main class="main">
+            <!-- Breadcrumb-->
+            <!--详情-->
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <div class="card" style="border: 0cm;">
+                        <div class="card-body">
+                            <div class="col-md-4 float-left">
+                                <img src="<%= good.gImgurl%>" class="card-img">
+                            </div>
+
+                            <div class="col-md-8 float-right">
+                                <div class="alert alert-light" role="alert">
+                                    <h5 style="color: #ffbd0b"><%= good.gname%></h5>
+                                    <p><%= good.gInfo%></p>
+                                </div>
+
+
+                                <div class="alert alert-secondary" role="alert">
+                                    价格:&nbsp;&nbsp;&nbsp;￥<span class="price"><%= good.gprice%></span>
+                                </div>
+
+                                <div class="alert alert-light" role="alert">
+                                    <div class="row">数量：
+                                        <button class="btn btn-square btn-sm btn-ligt" id="sub"
+                                            style="height: 30px">-</button>
+                                        <input size="1" id="num" value="1" style="height: 30px">
+                                        <button class="btn btn-square  btn-sm btn-light" id="add"
+                                            style="height: 30px">+</button>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-light" role="alert">
+                                    <button class="btn btn-sm btn-secondary" type="button" onclick="buy()">
+                                        <i class="icons cui-cart"></i>&nbsp;立即购买
+                                    </button>
+
+                                </div>
+
+                                <div class="alert alert-light" role="alert">
+
+                                    <table class="table " border="1">
+
+                                        <thead>
+                                            <tr>
+                                                <th style="border-bottom:none;text-align:center">产品参数</th>
+                                                <th>型号</th>
+                                                <th>保修期</th>
+                                                <th>耗电量</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="border-top:none"></td>
+                                                <td scope="col"><%= good.gparams[0].modeln%></td>
+                                                <td scope="col"><%= good.gparams[0].warrantly%></td>
+                                                <td scope="col"><%= good.gparams[0].pconsum%></td>
+                                            </tr>
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 折扣 -->
+                <div class="modal fade show" id="o1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                    data-backdrop='static'>
+                    <div class="modal-dialog modal-danger modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">打折？</h4>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                请输入折扣：
+                                <input type="text" id="onsale" size="8">&nbsp;&nbsp;折
+                                (没有折扣点击确认键即可)
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="button" data-toggle="modal" id="s5">确认
+                                </button>
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--结算-->
+                <div class="modal fade show" id="o2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                    data-backdrop='static'>
+                    <div class="modal-dialog modal-danger modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="isbod"></h4>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="cbuy">
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="button" data-toggle="modal" id="s6">确认
+                                </button>
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade show" id="s2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog modal-success modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">提示</h4>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <b>
+                                    <font size="2.2">购买成功！</font>
+                                </b>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" id="suredo">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+
+            </div>
+        </main>
+    </div>
+
+    <footer class="app-footer">
+        <div>
+            <a href="#">猪猪</a>
+            <span>&copy; 欢迎购买商品</span>
+        </div>
+        <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="#">jww</a>
+        </div>
+    </footer>
+
+
+    <!-- CoreUI and necessary plugins-->
+    <script src="/vendors/jquery/js/jquery.min.js"></script>
+    <script src="/vendors/popper.js/js/popper.min.js"></script>
+    <script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vendors/pace-progress/js/pace.min.js"></script>
+    <script src="/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js"></script>
+    <script src="/vendors/@coreui/coreui/js/coreui.min.js"></script>
+    <script>
+        let username = "<%= username%>";
+        let customername = '<%= customername%>';
+
+        // 自减
+        $("#sub").click(function () {
+            var num = parseInt($("#num").val());
+            if (num <= 1) {
+                $("#num").val(1);
+            } else {
+                $("#num").val(num - 1);
+            }
+
+        })
+
+        // 自增
+        $("#add").click(function () {
+            var num = parseInt($("#num").val());
+
+            if (num >= 10) {
+                alert("限购10件！");
+
+            } else {
+                $("#num").val(num + 1);
+            }
+        })
+
+        function buy() {
+            let goodnum = $("#num").val();
+
+            if (username && customername) {
+
+                $("#o1").modal('show');
+
+                $("#s5").click(function () {
+                    let onsale = $("#onsale").val();
+
+                    if (onsale) {
+                        onsale = parseFloat(onsale) * 0.1;
+                    } else {
+                        onsale = 1;
+                    }
+
+                    $("#o1").modal('hide');
+
+
+                    $("#isbod").text("结算");
+                    var div = $('#cbuy');
+                    div.empty();
+                    var p = $("<p>");
+                    p.text("您将购买以下物品：");
+                    div.append(p);
+
+                    var p = $("<p>");
+                    p.attr("style", "margin-left:20px")
+                    p.text('<%=good.gname%>' + '           ×' + goodnum);
+                    div.append(p)
+
+                    var p1 = $("<p>");
+                    p1.attr("style", "margin-left:300px");
+                    // p1.text("无折扣")
+                    onsale == 1 ? p1.text("无折扣") : p1.text("折扣：" + onsale * 10 + "折");
+
+
+                    var p2 = $("<p>");
+                    p2.attr("style", "margin-left:300px");
+                    p2.text("合计：￥" + goodnum * parseFloat('<%=good.gprice%>') * onsale);
+                    div.append(p1);
+                    div.append(p2);
+
+                    let gprice = parseFloat('<%=good.gprice%>') * onsale;
+                    let order = [{
+                        "goodId": '<%= good._id%>',
+                        "goodname": '<%= good.gname%>',
+                        "goodnum": goodnum,
+                        "price": gprice,
+                        "cname": customername,
+                        "ctele": '<%= ctele%>',
+                        "caddress": '<%= caddress%>',
+                        "sname": username
+                    }];
+
+
+                    $("#o2").modal('show');
+                    $("#s6").click(function () {
+
+                        $.ajax({
+                            type: "GET",
+                            url: "/aorders",
+                            data: {
+                                orders: order
+                            },
+                            success: function (data) {
+                                if (data == 1) {
+                                    $("#o2").modal('hide');
+                                    $("#s2").modal('show');
+                                    $('#suredo').click(function () {
+                                        window.location = "/saleOrder";
+                                    })
+                                }
+                            }
+
+                        })
+                    })
+                })
+
+
+
+            } else {
+                var message = confirm("还未登录或填写客户信息！请先返回首页填写！");
+                if (message == true) {
+                    window.location = "/";
+                }
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

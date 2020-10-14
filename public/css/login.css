@@ -1,0 +1,29 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    /*background-color: #4f8a74;*/
+    background-position: center center;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-image: url(/images/780.jpg);
+}
+
+.card {
+    
+    background-color: rgba(30, 66, 99, 0.466);
+}
+
+label {
+    color: white;
+}
+
+#file-input {
+    color: white;
+}
+
+.user {
+    color: #2eadd3;
+}

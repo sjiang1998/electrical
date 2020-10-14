@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v2.0.0
+* @link https://coreui.io
+* Copyright (c) 2018 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://coreui.io/license)
+-->
+
+<html lang="en">
+
+<head>
+    <base href="./">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="author" content="Łukasz Holeczek">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
+    <title>电器销售门店系统-财务-查看各个销售员业绩</title>
+    <!-- Icons-->
+    <link href="/vendors/@coreui/icons/css/coreui-icons.min.css" rel="stylesheet">
+    <link href="/vendors/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+    <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/vendors/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+    <!-- Main styles for this application-->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/vendors/pace-progress/css/pace.min.css" rel="stylesheet">
+    <style>
+        form {
+            margin-right: 90ex;
+        }
+
+        h5 {
+            margin-right: 5ex;
+        }
+
+        .sp1 {
+            margin-top: 10px;
+            font-size: 16px;
+            color: rgb(32, 114, 161)
+        }
+    </style>
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed">
+
+
+    <header class="app-header navbar">
+
+        <% if(role == "销售员"){%>
+        <a class="navbar-brand" href="/torder" style="margin-left: 50px">
+            <i class="icons cui-task" aria-hidden="true"></i>&nbsp;销售员-订单管理
+
+        </a>
+
+
+        <ul class="nav navbar-nav d-md-down-none" style="margin-left: 20px;">
+
+            <li class="nav-item px-sm-4">
+                <a class="btn-link" href="/">首页</a>
+            </li>
+            <li class="nav-item px-sm-4">
+                <a class="btn-link" href="/saleOrder">管理订单</a>
+            </li>
+            <li class="nav-item px-sm-4">
+                <a class="btn-link" href="/accView?name=<%= username%>">我的业绩</a>
+            </li>
+
+            <% if(username){ %>
+            <li class="nav-item px-sm-4">
+                <a href="/logout" class="btn-link">退出</a>
+            </li>
+            <% } %>
+        </ul>
+
+        <% } else{%>
+        <a class="nav-link active show" href="/accFinancial" style="font-size:2.5ex;margin-left: 100px">
+            <i class="icons cui-task" aria-hidden="true"></i>&nbsp;财务-业绩管理
+        </a>
+        <ul class="nav navbar-nav d-md-down-none" style="margin-left: 50px;">
+
+            <li class="nav-item px-sm-5">
+                <a class="btn-link" href="/accFinancial" style="font-size:18px">销售员业绩</a>
+            </li>
+
+            <li class="nav-item px-sm-5">
+                <a class="btn-link" href="/accResult" style="font-size:18px">统计</a>
+            </li>
+
+            <% if(username){ %>
+            <li class="nav-item px-sm-5">
+                <a href="/logout" class="btn-link" style="font-size:18px">退出</a>
+            </li>
+            <% } %>
+        </ul>
+
+
+        <%}%>
+        
+        <% if(username){ %>
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item d-md-down-none">
+                <p style="margin-top: 8px;margin-right: 30px;color: #136685;">欢迎您！
+                    <strong style="font-size:18px;color: #20A8D8"><%= username %></strong>
+                    <% if(role == "财务"){%>
+                    财务
+                    <% }else{ %>
+                    销售员
+                    <% } %>
+                </p>
+            </li>
+        </ul>
+
+
+        <% }else{ %>
+
+        <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item d-md-down-none">
+                <a class="nav-link" href="/login">
+                    <i class="fa fa-user-circle fa-2x mt-2" style="margin-right:50px">
+                        <h6>登录</h6>
+                    </i>
+                </a>
+            </li>
+        </ul>
+
+        <% } %>
+
+
+        <button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+    </header>
+
+
+    <div class="app-body">
+        <main class="main">
+            <div class="container-fluid">
+
+                <% if(orders != null){%>
+                <div class="animated fadeIn">
+                    <div class="card" style="margin-top:10px">
+
+                        <div class="card-header">
+                            <!--搜索框-->
+
+                            <div class="row">
+                                <div class="input-prepend input-group col-sm-5">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-user-circle-o fa-lg mt-2" style="color:#63C2DE"></i></span>
+                                    </div>
+                                    <% if(username){ %>
+                                    &nbsp;&nbsp;&nbsp;<span class="sp1">销售员：<%= sname%></span>
+                                    <% } %>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <div class="card-body">
+                            <table class="table table-responsive-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="check_all" /></th>
+                                        <th>商品名</th>
+                                        <th>数量</th>
+                                        <th>售价</th>
+                                        <th>成本</th>
+                                        <th>利润</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody">
+                                    <% for(let i=0;i < orders.length;i++){%>
+                                    <tr>
+                                        <td><input type="checkbox" class="check_item" />#<%= i%></td>
+                                        <td><%= orders[i].goodname%></td>
+                                        <td><%= orders[i].goodnum%></td>
+                                        <td>￥<%= orders[i].price%></td>
+                                        <td>￥<%= orders[i].cost%></td>
+                                        <% let profit = (parseFloat(orders[i].price)-parseFloat(orders[i].cost))*parseInt(orders[i].goodnum) %>
+                                        <td>￥<%= profit%>
+                                            <% if(profit >0){%>
+                                            <i class="icons cui-arrow-top" style="color:green;font-size: 15px"></i>
+                                            <% }else if(profit < 0){ %>
+                                            <i class="icons cui-arrow-bottom" style="color: red;font-size: 15px"></i>
+                                            <% }else{ %>
+                                            <span style="color:sandybrown">--</span>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                    <tr>
+                                        <td colspan="3" style="text-align:center">
+                                            <span>总计</span>
+                                        </td>
+                                        <td id="pricesum"></td>
+                                        <td id="costsum"></td>
+                                        <td id="profitsum"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="" style="margin-left:140ex">
+                                <button class="btn btn-primary" type="button" data-toggle="modal"
+                                    data-target="#profitsModal" onclick="profit()">利润统计</button>
+                            </div>
+                        </div>
+
+
+                        <!--利润统计-->
+                        <div class="modal fade show" id="profitsModal" tabindex="-1" role="dialog"
+                            aria-labelledby="myModalLabel" style="display:none;" aria-hidden="true">
+                            <div class="modal-dialog modal-primary modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">利润统计</h4>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div style="margin-top:20px">
+                                        <div id="profit" style="width: 850px;height:400px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <% }else{ %>
+                <h2 style="width:150px;margin: 10px auto">请先登录！</h2>
+                <% } %>
+            </div>
+        </main>
+    </div>
+
+
+
+
+    <footer class="app-footer">
+        <div>
+            <a href="https://coreui.io">CoreUI</a>
+            <span>&copy; 2018 creativeLabs.</span>
+        </div>
+        <div class="ml-auto">
+            <span>Powered by</span>
+            <a href="https://coreui.io">CoreUI</a>
+        </div>
+    </footer>
+
+    <!-- CoreUI and necessary plugins-->
+    <script src="/vendors/jquery/js/jquery.min.js"></script>
+    <script src="/vendors/popper.js/js/popper.min.js"></script>
+    <script src="/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/vendors/pace-progress/js/pace.min.js"></script>
+    <script src="/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js"></script>
+    <script src="/vendors/@coreui/coreui/js/coreui.min.js"></script>
+    <script src="/vendors/echarts/echarts.min.js"></script>
+    <script>
+
+        let pricesum = 0;
+        let costsum = 0;
+        let profitsum = 0;
+
+        <% if (orders != null) { %>
+        <% for (let i = 0; i < orders.length; i++) {%>
+                pricesum = pricesum + parseFloat('<%= orders[i].price%>');
+                costsum = costsum + parseFloat('<%= orders[i].cost%>');
+                profitsum = profitsum + (parseFloat('<%= orders[i].price%>') - parseFloat('<%= orders[i].cost%>')) * parseInt('<%= orders[i].goodnum%>');
+
+        <% } %>
+        <% } %>
+
+            $("#pricesum").text("￥" + pricesum);
+        $("#costsum").text("￥" + costsum);
+        $("#profitsum").text("￥" + profitsum);
+
+        function profit() {
+
+            if ('<%= sname%>') {
+                $.ajax({
+                    type: "POST",
+                    url: "/accView/profit",
+                    data: {
+                        sname: '<%= sname%>'
+                    },
+                    cache: false,
+                    success: function (data) {
+                        var myChart = echarts.init(document.getElementById('profit'));
+
+                        // 指定图表的配置项和数据
+                        var option = {
+                            title: {
+                                x: 'center',
+                                y: 'top',
+                                text: "<%= sname%>" + "销售员今年的利润直方图"
+                            },
+                            tooltip: {},
+                            legend: {
+                                orient: 'horizontal',
+                                x: 'center',
+                                y: '30px',
+                                data: ['月份']
+                            },
+                            xAxis: [{
+                                data: (function () {
+                                    let d1 = [];
+                                    data.forEach(function (item) {
+                                        d1.push(item._id);
+                                    })
+                                    return d1;
+                                })()
+
+                            }],
+                            yAxis: {},
+                            series: [
+                                {
+                                    name: '月份',
+                                    type: 'bar',
+                                    data: (function () {
+                                        let d1 = [];
+                                        data.forEach(function (item) {
+                                            d1.push(item.profit_sum);
+                                        })
+                                        return d1;
+                                    })(),
+                                    itemStyle: {
+                                        normal: {
+                                            color: function (params) {
+                                                var colorList = [
+                                                    '#27727B', '#FE8463'
+                                                ];
+                                                return colorList[params.dataIndex]
+                                            },
+                                        }
+                                    },
+                                    barWidth: 80
+                                }
+
+                            ]
+                        };
+
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    }
+                })
+            }
+        }
+    </script>
+
+</body>
+
+</html>

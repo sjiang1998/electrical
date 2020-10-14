@@ -1,0 +1,40 @@
+h3 {
+    text-align: center;
+}
+
+.return {
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+.jumbotron {
+    background-color: white;
+}
+
+main {
+    background-color: #7acfd3;
+}
+
+.li-col {
+    color: #3c3c3c;
+}
+
+.li-col-size {
+    color: #1d97c2;
+    font-size: 15px;
+}
+
+.price {
+    color: #f5a31f;
+    font-size: 30px;
+}
+
+.address {
+    color: #3c3c3c;
+    font-size: 15px;
+}
+
+.card-img {
+    width: 320px;
+    height: 300px;
+}
